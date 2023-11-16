@@ -37,15 +37,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerViewTasks.adapter = EpicAdapter {
             setup<Task, TaskItemBinding>(TaskItemBinding::inflate) {
-                bind { item ->
-                    textViewContent.text = item.content
+                init { item ->
                     imageButtonDelete.setOnClickListener {
                         DeleteTask(
                             database = DI.database,
                             coroutineScope = lifecycleScope,
-                            taskId = item.id
+                            taskId = item.value.id
                         ).execute()
                     }
+                }
+                bind { item ->
+                    textViewContent.text = item.content
                 }
             }
         }
